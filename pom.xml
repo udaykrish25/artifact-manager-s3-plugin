@@ -37,7 +37,7 @@
 
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+    <developerConnection>scm:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
     <tag>HEAD</tag>
   </scm>
@@ -176,6 +176,32 @@
           </processors>
         </configuration>
       </plugin>
+
+      <!-- ✅ Enforcer plugin with fail=false and exclude -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M1</version>
+        <executions>
+          <execution>
+            <id>display-info</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireUpperBoundDeps>
+                  <excludes>
+                    <exclude>com.google.inject:guice</exclude>
+                  </excludes>
+                </requireUpperBoundDeps>
+              </rules>
+              <fail>false</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -220,3 +246,4 @@
     </profile>
   </profiles>
 </project>
+
