@@ -37,7 +37,7 @@
 
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
-    <developerConnection>scm:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
     <tag>HEAD</tag>
   </scm>
@@ -117,11 +117,12 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- ✅ Annotation processor -->
+    <!-- Keep annotation-indexer as provided or remove scope -->
     <dependency>
       <groupId>org.jenkins-ci</groupId>
       <artifactId>annotation-indexer</artifactId>
       <version>1.12</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -155,7 +156,7 @@
         </configuration>
       </plugin>
 
-      <!-- ✅ Annotation Processor plugin -->
+      <!-- Annotation Processor plugin with dependency included -->
       <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>
@@ -174,33 +175,14 @@
             <processor>org.jenkinsci.AnnotationProcessorImpl</processor>
           </processors>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.jenkins-ci</groupId>
+            <artifactId>annotation-indexer</artifactId>
+            <version>1.12</version>
+          </dependency>
+        </dependencies>
       </plugin>
-
-      <!-- ✅ Enforcer plugin with fail=false and exclude -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M1</version>
-        <executions>
-          <execution>
-            <id>display-info</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireUpperBoundDeps>
-                  <excludes>
-                    <exclude>com.google.inject:guice</exclude>
-                  </excludes>
-                </requireUpperBoundDeps>
-              </rules>
-              <fail>false</fail>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
     </plugins>
   </build>
 
