@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
     <version>3.7</version>
-    <relativePath />
+    <relativePath/>
   </parent>
+
   <groupId>io.jenkins.plugins</groupId>
   <artifactId>artifact-manager-s3</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
@@ -17,13 +20,14 @@
     <jclouds.version>2.0.3</jclouds.version>
     <jenkins.version>2.118</jenkins.version>
     <java.level>8</java.level>
-    <workflow-api-plugin.version>2.28-20180416.205621-1</workflow-api-plugin.version> <!-- TODO https://github.com/jenkinsci/workflow-api-plugin/pull/67 -->
+    <workflow-api-plugin.version>2.28-20180416.205621-1</workflow-api-plugin.version>
     <useBeta>true</useBeta>
   </properties>
 
   <name>Artifact Manager on S3 plugin</name>
   <description>A Jenkins plugin to keep artifacts and Pipeline stashes in Amazon S3.</description>
   <url>https://wiki.jenkins.io/display/JENKINS/Artifact+Manager+S3+Plugin</url>
+
   <licenses>
     <license>
       <name>MIT License</name>
@@ -39,29 +43,12 @@
   </scm>
 
   <dependencies>
-    <!-- shaded jclouds by the jclouds plugin -->
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>jclouds-shaded</artifactId>
       <version>2.14</version>
-      <exclusions>
-        <!--
-        <exclusion>
-          <groupId>com.google.inject</groupId>
-          <artifactId>guice</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.google.inject.extensions</groupId>
-          <artifactId>guice-assistedinject</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.google.inject.extensions</groupId>
-          <artifactId>guice-multibindings</artifactId>
-        </exclusion>
-        -->
-      </exclusions>
     </dependency>
-    <!-- to make it work in eclipse during development -->
+
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -74,42 +61,41 @@
       <artifactId>aws-java-sdk</artifactId>
       <version>1.11.248</version>
     </dependency>
-<!--
+
     <dependency>
-      <groupId>org.apache.jclouds.provider</groupId>
-      <artifactId>aws-s3</artifactId>
-      <version>${jclouds.version}</version>
-    </dependency>
--->
-     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>2.8.9</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>org.eclipse.jdt.annotation</artifactId>
       <version>2.0.0</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
-        <groupId>org.jenkins-ci.plugins</groupId>
-        <artifactId>structs</artifactId>
-        <version>1.14</version>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>structs</artifactId>
+      <version>1.14</version>
     </dependency>
+
     <dependency>
-        <groupId>org.jenkins-ci.plugins.workflow</groupId>
-        <artifactId>workflow-api</artifactId>
-        <version>${workflow-api-plugin.version}</version>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-api</artifactId>
+      <version>${workflow-api-plugin.version}</version>
     </dependency>
+
     <dependency>
-        <groupId>org.jenkins-ci.plugins.workflow</groupId>
-        <artifactId>workflow-api</artifactId>
-        <version>${workflow-api-plugin.version}</version>
-        <classifier>tests</classifier>
-        <scope>test</scope>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-api</artifactId>
+      <version>${workflow-api-plugin.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.jenkins-ci.test</groupId>
       <artifactId>docker-fixtures</artifactId>
@@ -122,12 +108,14 @@
         </exclusion>
       </exclusions>
     </dependency>
+
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>ssh-slaves</artifactId>
       <version>1.26</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>jdk-tool</artifactId>
@@ -135,6 +123,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -156,34 +145,55 @@
   </dependencyManagement>
 
   <build>
-      <plugins>
-          <plugin>
-              <artifactId>maven-enforcer-plugin</artifactId>
-              <executions>
-                  <execution>
-                      <id>display-info</id>
-                      <configuration>
-                          <rules>
-                              <requireUpperBoundDeps>
-                                  <excludes combine.children="append">
-                                      <exclude>com.google.inject:guice</exclude> <!-- TODO jclouds classpath hell -->
-                                  </excludes>
-                              </requireUpperBoundDeps>
-                          </rules>
-                      </configuration>
-                  </execution>
-              </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.jenkins-ci.tools</groupId>
-            <artifactId>maven-hpi-plugin</artifactId>
+    <plugins>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>display-info</id>
             <configuration>
-              <pluginFirstClassLoader>true</pluginFirstClassLoader>
+              <rules>
+                <requireUpperBoundDeps>
+                  <excludes combine.children="append">
+                    <exclude>com.google.inject:guice</exclude>
+                  </excludes>
+                </requireUpperBoundDeps>
+              </rules>
             </configuration>
-          </plugin>
+          </execution>
+        </executions>
+      </plugin>
 
-      </plugins>
+      <plugin>
+        <groupId>org.jenkins-ci.tools</groupId>
+        <artifactId>maven-hpi-plugin</artifactId>
+        <configuration>
+          <pluginFirstClassLoader>true</pluginFirstClassLoader>
+        </configuration>
+      </plugin>
+
+      <!-- ✅ NEWLY ADDED plugin to fix NoSuchFileException -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <id>create-annotations-dir</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <mkdir dir="${project.build.outputDirectory}/META-INF/annotations"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
   </build>
 
   <repositories>
@@ -192,6 +202,7 @@
       <url>https://repo.jenkins-ci.org/public/</url>
     </repository>
   </repositories>
+
   <pluginRepositories>
     <pluginRepository>
       <id>repo.jenkins-ci.org</id>
@@ -200,29 +211,29 @@
   </pluginRepositories>
 
   <profiles>
-      <profile>
-          <id>S3-settings</id>
-          <activation>
-              <property>
-                  <name>S3_BUCKET</name>
-              </property>
-          </activation>
-          <build>
-              <plugins>
-                  <plugin>
-                      <groupId>org.apache.maven.plugins</groupId>
-                      <artifactId>maven-surefire-plugin</artifactId>
-                      <configuration>
-                          <environmentVariables>
-                              <AWS_PROFILE>${AWS_PROFILE}</AWS_PROFILE>
-                              <AWS_REGION>${AWS_REGION}</AWS_REGION>
-                              <S3_BUCKET>${S3_BUCKET}</S3_BUCKET>
-                              <S3_DIR>${S3_DIR}</S3_DIR>
-                          </environmentVariables>
-                      </configuration>
-                  </plugin>
-              </plugins>
-          </build>
-      </profile>
+    <profile>
+      <id>S3-settings</id>
+      <activation>
+        <property>
+          <name>S3_BUCKET</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <environmentVariables>
+                <AWS_PROFILE>${AWS_PROFILE}</AWS_PROFILE>
+                <AWS_REGION>${AWS_REGION}</AWS_REGION>
+                <S3_BUCKET>${S3_BUCKET}</S3_BUCKET>
+                <S3_DIR>${S3_DIR}</S3_DIR>
+              </environmentVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>
