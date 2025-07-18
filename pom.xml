@@ -16,6 +16,10 @@
   <version>1.0-alpha-1-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
+  <name>Artifact Manager on S3 plugin</name>
+  <description>A Jenkins plugin to keep artifacts and Pipeline stashes in Amazon S3.</description>
+  <url>https://wiki.jenkins.io/display/JENKINS/Artifact+Manager+S3+Plugin</url>
+
   <properties>
     <jclouds.version>2.0.3</jclouds.version>
     <jenkins.version>2.118</jenkins.version>
@@ -23,10 +27,6 @@
     <workflow-api-plugin.version>2.28-20180416.205621-1</workflow-api-plugin.version>
     <useBeta>true</useBeta>
   </properties>
-
-  <name>Artifact Manager on S3 plugin</name>
-  <description>A Jenkins plugin to keep artifacts and Pipeline stashes in Amazon S3.</description>
-  <url>https://wiki.jenkins.io/display/JENKINS/Artifact+Manager+S3+Plugin</url>
 
   <licenses>
     <license>
@@ -63,20 +63,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>2.8.9</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.jdt</groupId>
-      <artifactId>org.eclipse.jdt.annotation</artifactId>
-      <version>2.0.0</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>structs</artifactId>
       <version>1.14</version>
@@ -97,16 +83,24 @@
     </dependency>
 
     <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>2.8.9</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jdt</groupId>
+      <artifactId>org.eclipse.jdt.annotation</artifactId>
+      <version>2.0.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.jenkins-ci.test</groupId>
       <artifactId>docker-fixtures</artifactId>
       <version>1.7</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
@@ -121,6 +115,14 @@
       <artifactId>jdk-tool</artifactId>
       <version>1.0</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- ✅ Annotation processor -->
+    <dependency>
+      <groupId>org.jenkins-ci</groupId>
+      <artifactId>annotation-indexer</artifactId>
+      <version>1.12</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -147,24 +149,6 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>display-info</id>
-            <configuration>
-              <rules>
-                <requireUpperBoundDeps>
-                  <excludes combine.children="append">
-                    <exclude>com.google.inject:guice</exclude>
-                  </excludes>
-                </requireUpperBoundDeps>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <groupId>org.jenkins-ci.tools</groupId>
         <artifactId>maven-hpi-plugin</artifactId>
         <configuration>
@@ -172,27 +156,26 @@
         </configuration>
       </plugin>
 
-      <!-- ✅ NEWLY ADDED plugin to fix NoSuchFileException -->
+      <!-- ✅ Annotation Processor plugin -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <version>3.3.3</version>
         <executions>
           <execution>
-            <id>create-annotations-dir</id>
-            <phase>generate-sources</phase>
-            <configuration>
-              <target>
-                <mkdir dir="${project.build.outputDirectory}/META-INF/annotations"/>
-              </target>
-            </configuration>
+            <id>process</id>
             <goals>
-              <goal>run</goal>
+              <goal>process</goal>
             </goals>
+            <phase>generate-sources</phase>
           </execution>
         </executions>
+        <configuration>
+          <processors>
+            <processor>org.jenkinsci.AnnotationProcessorImpl</processor>
+          </processors>
+        </configuration>
       </plugin>
-
     </plugins>
   </build>
 
