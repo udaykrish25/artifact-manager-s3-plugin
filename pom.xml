@@ -47,6 +47,38 @@
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>jclouds-shaded</artifactId>
       <version>2.14</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.inject</groupId>
+          <artifactId>guice</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.inject.extensions</groupId>
+          <artifactId>guice-assistedinject</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.inject.extensions</groupId>
+          <artifactId>guice-multibindings</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>4.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-assistedinject</artifactId>
+      <version>4.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-multibindings</artifactId>
+      <version>4.0</version>
     </dependency>
 
     <dependency>
@@ -117,7 +149,7 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Keep annotation-indexer as provided or remove scope -->
+    <!-- ✅ Annotation processor -->
     <dependency>
       <groupId>org.jenkins-ci</groupId>
       <artifactId>annotation-indexer</artifactId>
@@ -156,7 +188,7 @@
         </configuration>
       </plugin>
 
-      <!-- Annotation Processor plugin with dependency included -->
+      <!-- ✅ Annotation Processor plugin -->
       <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>
@@ -175,13 +207,6 @@
             <processor>org.jenkinsci.AnnotationProcessorImpl</processor>
           </processors>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.jenkins-ci</groupId>
-            <artifactId>annotation-indexer</artifactId>
-            <version>1.12</version>
-          </dependency>
-        </dependencies>
       </plugin>
     </plugins>
   </build>
@@ -227,4 +252,5 @@
     </profile>
   </profiles>
 </project>
+
 
