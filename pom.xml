@@ -50,11 +50,11 @@
       <groupId>org.jenkins-ci.plugins.workflow</groupId>
       <artifactId>workflow-api</artifactId>
     </dependency>
-    <!-- Add other dependencies like jclouds-shaded, aws-java-sdk, etc. -->
+    <!-- Add your other dependencies here -->
   </dependencies>
 
   <build>
-    <!-- Override Jenkins parent's pluginManagement -->
+    <!-- ✅ Properly disable inherited Enforcer plugin executions -->
     <pluginManagement>
       <plugins>
         <plugin>
@@ -62,7 +62,10 @@
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>3.0.0</version>
           <executions>
-            <!-- Intentionally empty to disable inherited rules -->
+            <execution>
+              <id>disable-all</id>
+              <phase>none</phase>
+            </execution>
           </executions>
         </plugin>
       </plugins>
@@ -92,16 +95,6 @@
             </path>
           </annotationProcessorPaths>
         </configuration>
-      </plugin>
-
-      <!-- Disable Enforcer plugin completely -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <!-- Intentionally empty to override parent executions -->
-        </executions>
       </plugin>
     </plugins>
   </build>
