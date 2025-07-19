@@ -30,28 +30,7 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- Resolve Joda-Time conflict -->
-      <dependency>
-        <groupId>joda-time</groupId>
-        <artifactId>joda-time</artifactId>
-        <version>2.8.1</version>
-      </dependency>
-
-      <!-- Resolve Jackson Databind conflict -->
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>2.7.0</version>
-      </dependency>
-
-      <!-- Annotation indexer -->
-      <dependency>
-        <groupId>org.jenkins-ci</groupId>
-        <artifactId>annotation-indexer</artifactId>
-        <version>1.17</version>
-      </dependency>
-
-      <!-- Force consistent Guice versions (downgraded from 6.0.0) -->
+      <!-- Guice dependencies downgraded to latest stable releases -->
       <dependency>
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
@@ -67,18 +46,6 @@
         <artifactId>guice-multibindings</artifactId>
         <version>5.1.0</version>
       </dependency>
-
-      <!-- Force symbol-annotation and access-modifier-annotation -->
-      <dependency>
-        <groupId>org.jenkins-ci</groupId>
-        <artifactId>symbol-annotation</artifactId>
-        <version>1.24</version>
-      </dependency>
-      <dependency>
-        <groupId>org.kohsuke</groupId>
-        <artifactId>access-modifier-annotation</artifactId>
-        <version>1.33</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -88,33 +55,15 @@
       <artifactId>jclouds-shaded</artifactId>
       <version>2.14</version>
       <exclusions>
-        <exclusion>
-          <groupId>com.google.inject</groupId>
-          <artifactId>guice</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.google.inject.extensions</groupId>
-          <artifactId>guice-assistedinject</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.google.inject.extensions</groupId>
-          <artifactId>guice-multibindings</artifactId>
-        </exclusion>
+        <exclusion><groupId>com.google.inject</groupId><artifactId>guice</artifactId></exclusion>
+        <exclusion><groupId>com.google.inject.extensions</groupId><artifactId>guice-assistedinject</artifactId></exclusion>
+        <exclusion><groupId>com.google.inject.extensions</groupId><artifactId>guice-multibindings</artifactId></exclusion>
       </exclusions>
     </dependency>
 
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-assistedinject</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-multibindings</artifactId>
-    </dependency>
+    <dependency><groupId>com.google.inject</groupId><artifactId>guice</artifactId></dependency>
+    <dependency><groupId>com.google.inject.extensions</groupId><artifactId>guice-assistedinject</artifactId></dependency>
+    <dependency><groupId>com.google.inject.extensions</groupId><artifactId>guice-multibindings</artifactId></dependency>
 
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -168,14 +117,8 @@
       <version>1.7</version>
       <scope>test</scope>
       <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.jenkins-ci</groupId>
-          <artifactId>annotation-indexer</artifactId>
-        </exclusion>
+        <exclusion><groupId>com.fasterxml.jackson.core</groupId><artifactId>jackson-databind</artifactId></exclusion>
+        <exclusion><groupId>org.jenkins-ci</groupId><artifactId>annotation-indexer</artifactId></exclusion>
       </exclusions>
     </dependency>
 
@@ -199,7 +142,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- SpotBugs annotations (for @NonNull etc.) -->
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
@@ -239,23 +181,31 @@
 
   <repositories>
     <repository>
-      <id>repo.jenkins-ci.org-public</id>
+      <id>jenkins-public</id>
       <url>https://repo.jenkins-ci.org/public/</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>false</enabled></snapshots>
     </repository>
     <repository>
-      <id>repo.jenkins-ci.org-snapshots</id>
+      <id>jenkins-snapshots</id>
       <url>https://repo.jenkins-ci.org/snapshots/</url>
+      <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
-      <id>repo.jenkins-ci.org-public</id>
+      <id>jenkins-public</id>
       <url>https://repo.jenkins-ci.org/public/</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>false</enabled></snapshots>
     </pluginRepository>
     <pluginRepository>
-      <id>repo.jenkins-ci.org-snapshots</id>
+      <id>jenkins-snapshots</id>
       <url>https://repo.jenkins-ci.org/snapshots/</url>
+      <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
     </pluginRepository>
   </pluginRepositories>
 
@@ -263,9 +213,7 @@
     <profile>
       <id>S3-settings</id>
       <activation>
-        <property>
-          <name>S3_BUCKET</name>
-        </property>
+        <property><name>S3_BUCKET</name></property>
       </activation>
       <build>
         <plugins>
