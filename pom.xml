@@ -20,7 +20,7 @@
 
   <properties>
     <jenkins.version>2.426.2</jenkins.version>
-    <java.level>11</java.level> <!-- Updated for Java 11 -->
+    <java.level>8</java.level>
     <workflow-api-plugin.version>2.91</workflow-api-plugin.version>
   </properties>
 
@@ -42,26 +42,6 @@
         <artifactId>workflow-api</artifactId>
         <version>${workflow-api-plugin.version}</version>
       </dependency>
-      <dependency>
-        <groupId>joda-time</groupId>
-        <artifactId>joda-time</artifactId>
-        <version>2.10.10</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.inject</groupId>
-        <artifactId>guice</artifactId>
-        <version>6.0.0</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>2.15.3</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jvnet</groupId>
-        <artifactId>annotation-indexer</artifactId>
-        <version>1.17</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -70,7 +50,7 @@
       <groupId>org.jenkins-ci.plugins.workflow</groupId>
       <artifactId>workflow-api</artifactId>
     </dependency>
-    <!-- Add your additional dependencies here -->
+    <!-- Add other dependencies like jclouds-shaded, aws-java-sdk, etc. -->
   </dependencies>
 
   <build>
@@ -88,8 +68,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
-          <source>11</source>
-          <target>11</target>
+          <source>8</source>
+          <target>8</target>
           <annotationProcessorPaths>
             <path>
               <groupId>org.jenkins-ci</groupId>
@@ -100,7 +80,7 @@
         </configuration>
       </plugin>
 
-      <!-- Keep Enforcer disabled for now -->
+      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -112,6 +92,9 @@
           </execution>
         </executions>
       </plugin>
+      -->
+      
     </plugins>
   </build>
 </project>
+
