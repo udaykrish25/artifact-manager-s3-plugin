@@ -9,45 +9,110 @@
   <packaging>hpi</packaging>
 
   <name>Artifact Manager on S3 plugin</name>
-  <description>Stores build artifacts on S3-compatible storage</description>
+  <description>Stores build artifacts in Amazon S3 rather than on the master.</description>
+  <url>https://github.com/jenkinsci/artifact-manager-s3-plugin</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>user</id>
+      <name>Your Name</name>
+      <email>your@email.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/jenkinsci/artifact-manager-s3-plugin.git</connection>
+    <developerConnection>scm:git:https://github.com/jenkinsci/artifact-manager-s3-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/artifact-manager-s3-plugin</url>
+  </scm>
 
   <parent>
-    <groupId>io.jenkins.plugin</groupId>
+    <groupId>io.jenkins</groupId>
     <artifactId>plugin</artifactId>
-    <version>1666.vf8f2735613e1</version>
-    <relativePath />
+    <version>4.70</version>
   </parent>
 
   <properties>
+    <jenkins.version>2.426.2</jenkins.version>
     <java.level>8</java.level>
+    <hpi.plugin.compatibleSinceVersion>1.0-alpha-1</hpi.plugin.compatibleSinceVersion>
   </properties>
-
-  <dependencies>
-    <!-- Add your dependencies here -->
-  </dependencies>
 
   <build>
     <plugins>
-      <!-- Enforcer override to disable bytecode and UBER rules -->
+      <!-- Disable inherited Jenkins enforcer rules -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0</version>
         <executions>
           <execution>
-            <id>override-all</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules/>
-              <fail>false</fail>
-            </configuration>
+            <id>enforce</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>display-info</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>ban-bytecode</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>require-upper-bound-deps</id>
+            <phase>none</phase>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
 
+  <dependencies>
+    <!-- Add your plugin's dependencies here -->
+
+    <!-- Example dependencies -->
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>aws-java-sdk</artifactId>
+      <version>1.11.248</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>jclouds-shaded</artifactId>
+      <version>2.14</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>structs</artifactId>
+      <version>1.14</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-api</artifactId>
+      <version>2.28-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.main</groupId>
+      <artifactId>jenkins-core</artifactId>
+      <version>${jenkins.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.jenkins-ci.test</groupId>
+      <artifactId>docker-fixtures</artifactId>
+      <version>1.7</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
 </project>
+
