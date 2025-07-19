@@ -85,6 +85,7 @@
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0</version>
         <executions>
+          <!-- Disable Jenkins plugin parent enforcer rules -->
           <execution>
             <id>enforce</id>
             <phase>none</phase>
@@ -92,10 +93,20 @@
           <execution>
             <id>display-info</id>
             <phase>none</phase>
-          </execution>   
+          </execution>
+          <execution>
+            <id>ban-bytecode</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>require-upper-bound-deps</id>
+            <phase>none</phase>
+          </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
 </project>
+
 
