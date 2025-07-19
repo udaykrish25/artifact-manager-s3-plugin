@@ -1,112 +1,84 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <parent>
-    <groupId>org.jenkins-ci.plugins</groupId>
-    <artifactId>plugin</artifactId>
-    <version>4.72</version>
-    <relativePath/>
-  </parent>
 
   <groupId>io.jenkins.plugins</groupId>
   <artifactId>artifact-manager-s3</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
-  <name>Artifact Manager S3 Plugin</name>
-  <url>https://www.jenkins.io</url>
+  <name>Artifact Manager on S3 plugin</name>
+  <description>Jenkins plugin to store build artifacts on Amazon S3</description>
+  <url>https://github.com/jenkinsci/artifact-manager-s3-plugin</url>
 
   <properties>
-    <jenkins.version>2.426.2</jenkins.version>
     <java.level>8</java.level>
-    <workflow-api-plugin.version>2.91</workflow-api-plugin.version>
+    <jenkins.version>2.426.2</jenkins.version>
+    <hpi-plugin.version>3.25</hpi-plugin.version>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>jenkins-public</id>
-      <url>https://repo.jenkins-ci.org/public/</url>
-    </repository>
-    <repository>
-      <id>jenkins-snapshots</id>
-      <url>https://repo.jenkins-ci.org/snapshots/</url>
-    </repository>
-  </repositories>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jenkins-ci.plugins.workflow</groupId>
-        <artifactId>workflow-api</artifactId>
-        <version>${workflow-api-plugin.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins.workflow</groupId>
-      <artifactId>workflow-api</artifactId>
-    </dependency>
-    <!-- Add additional plugin dependencies as needed -->
+    <!-- your dependencies here -->
   </dependencies>
 
   <build>
     <plugins>
-      <!-- HPI plugin updated -->
-      <plugin>
-        <groupId>org.jenkins-ci.tools</groupId>
-        <artifactId>maven-hpi-plugin</artifactId>
-        <version>3.66</version>
-        <configuration>
-          <pluginFirstClassLoader>true</pluginFirstClassLoader>
-        </configuration>
-      </plugin>
-
-      <!-- Compiler plugin for Java 8 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-          <source>8</source>
-          <target>8</target>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.jenkins-ci</groupId>
-              <artifactId>annotation-indexer</artifactId>
-              <version>1.17</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-
-      <!-- Enforcer plugin disabled -->
+      <!-- Completely disable inherited enforcer rules -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0</version>
         <executions>
           <execution>
-            <id>enforce</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>display-info</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>ban-bytecode</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>require-upper-bound-deps</id>
-            <phase>none</phase>
+            <id>override-parent</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules/>
+              <fail>false</fail>
+            </configuration>
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.jenkins-ci.tools</groupId>
+        <artifactId>maven-hpi-plugin</artifactId>
+        <version>${hpi-plugin.version}</version>
+        <extensions>true</extensions>
+      </plugin>
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+      <id>jenkins-releases</id>
+      <url>https://repo.jenkins-ci.org/releases/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jenkins-releases</id>
+      <url>https://repo.jenkins-ci.org/releases/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <developers>
+    <developer>
+      <id>your-id</id>
+      <name>Your Name</name>
+      <email>your@email.com</email>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>The MIT License</name>
+      <url>http://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
 </project>
+
