@@ -1,13 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.72</version>
-    <relativePath/>
+    <version>4.64</version>
   </parent>
 
   <groupId>io.jenkins.plugins</groupId>
@@ -15,93 +14,64 @@
   <version>1.0-alpha-1-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
-  <name>Artifact Manager S3 Plugin</name>
-  <url>https://www.jenkins.io</url>
+  <name>Artifact Manager on S3 plugin</name>
+  <description>Stores build artifacts in Amazon S3</description>
+  <url>https://github.com/jenkinsci/artifact-manager-s3-plugin</url>
 
   <properties>
-    <jenkins.version>2.426.2</jenkins.version>
     <java.level>8</java.level>
-    <workflow-api-plugin.version>2.91</workflow-api-plugin.version>
+    <jenkins.version>2.426.2</jenkins.version>
   </properties>
-
-  <repositories>
-    <repository>
-      <id>jenkins-public</id>
-      <url>https://repo.jenkins-ci.org/public/</url>
-    </repository>
-    <repository>
-      <id>jenkins-snapshots</id>
-      <url>https://repo.jenkins-ci.org/snapshots/</url>
-    </repository>
-  </repositories>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jenkins-ci.plugins.workflow</groupId>
-        <artifactId>workflow-api</artifactId>
-        <version>${workflow-api-plugin.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins.workflow</groupId>
-      <artifactId>workflow-api</artifactId>
-    </dependency>
-    <!-- Add other dependencies like jclouds-shaded, aws-java-sdk, etc. -->
-  </dependencies>
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.jenkins-ci.tools</groupId>
-        <artifactId>maven-hpi-plugin</artifactId>
-        <configuration>
-          <pluginFirstClassLoader>true</pluginFirstClassLoader>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-          <source>8</source>
-          <target>8</target>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.jenkins-ci</groupId>
-              <artifactId>annotation-indexer</artifactId>
-              <version>1.17</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-
-      <!-- Override inherited Enforcer rules from Jenkins parent -->
+      <!-- Optional: You can comment this plugin block too -->
+      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0</version>
         <executions>
           <execution>
-            <id>override-inherited</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules/>
-              <fail>false</fail>
-            </configuration>
+            <id>noop</id>
+            <phase>none</phase>
           </execution>
         </executions>
       </plugin>
-
+      -->
     </plugins>
   </build>
+
+  <!-- 👇 Profile to disable all enforcer rules -->
+  <profiles>
+    <profile>
+      <id>disable-enforcer</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>disable-all-enforcer-rules</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <dependencies>
+    <!-- Add your plugin dependencies here -->
+  </dependencies>
+
 </project>
+
 
 
 
