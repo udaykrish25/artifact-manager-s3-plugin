@@ -50,20 +50,37 @@
       <groupId>org.jenkins-ci.plugins.workflow</groupId>
       <artifactId>workflow-api</artifactId>
     </dependency>
-    <!-- Add your other dependencies here -->
+    <!-- Add other dependencies like jclouds-shaded, aws-java-sdk, etc. -->
   </dependencies>
 
   <build>
-    <!-- ✅ Properly disable inherited Enforcer plugin executions -->
     <pluginManagement>
       <plugins>
+        <!-- ✅ Fully override inherited enforcer executions from Jenkins parent POM -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>3.0.0</version>
           <executions>
+            <!-- Catch all inherited executions and disable them -->
             <execution>
-              <id>disable-all</id>
+              <id>default</id>
+              <phase>none</phase>
+            </execution>
+            <execution>
+              <id>enforce-bytecode-version</id>
+              <phase>none</phase>
+            </execution>
+            <execution>
+              <id>require-upper-bound-deps</id>
+              <phase>none</phase>
+            </execution>
+            <execution>
+              <id>ban-dependencies</id>
+              <phase>none</phase>
+            </execution>
+            <execution>
+              <id>display-info</id>
               <phase>none</phase>
             </execution>
           </executions>
