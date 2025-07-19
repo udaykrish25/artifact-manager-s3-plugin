@@ -9,29 +9,34 @@
   <packaging>hpi</packaging>
 
   <name>Artifact Manager on S3 plugin</name>
-  <description>Jenkins plugin to store build artifacts on Amazon S3</description>
-  <url>https://github.com/jenkinsci/artifact-manager-s3-plugin</url>
+  <description>Stores build artifacts on S3-compatible storage</description>
+
+  <parent>
+    <groupId>io.jenkins.plugin</groupId>
+    <artifactId>plugin</artifactId>
+    <version>1666.vf8f2735613e1</version>
+    <relativePath />
+  </parent>
 
   <properties>
     <java.level>8</java.level>
-    <jenkins.version>2.426.2</jenkins.version>
-    <hpi-plugin.version>3.25</hpi-plugin.version>
   </properties>
 
   <dependencies>
-    <!-- your dependencies here -->
+    <!-- Add your dependencies here -->
   </dependencies>
 
   <build>
     <plugins>
-      <!-- Completely disable inherited enforcer rules -->
+      <!-- Enforcer override to disable bytecode and UBER rules -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0</version>
         <executions>
           <execution>
-            <id>override-parent</id>
+            <id>override-all</id>
+            <phase>validate</phase>
             <goals>
               <goal>enforce</goal>
             </goals>
@@ -42,43 +47,7 @@
           </execution>
         </executions>
       </plugin>
-
-      <plugin>
-        <groupId>org.jenkins-ci.tools</groupId>
-        <artifactId>maven-hpi-plugin</artifactId>
-        <version>${hpi-plugin.version}</version>
-        <extensions>true</extensions>
-      </plugin>
     </plugins>
   </build>
 
-  <repositories>
-    <repository>
-      <id>jenkins-releases</id>
-      <url>https://repo.jenkins-ci.org/releases/</url>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>jenkins-releases</id>
-      <url>https://repo.jenkins-ci.org/releases/</url>
-    </pluginRepository>
-  </pluginRepositories>
-
-  <developers>
-    <developer>
-      <id>your-id</id>
-      <name>Your Name</name>
-      <email>your@email.com</email>
-    </developer>
-  </developers>
-
-  <licenses>
-    <license>
-      <name>The MIT License</name>
-      <url>http://opensource.org/licenses/MIT</url>
-    </license>
-  </licenses>
 </project>
-
