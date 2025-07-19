@@ -50,54 +50,22 @@
       <groupId>org.jenkins-ci.plugins.workflow</groupId>
       <artifactId>workflow-api</artifactId>
     </dependency>
-    <!-- Add other dependencies like jclouds-shaded, aws-java-sdk, etc. -->
+    <!-- Add additional plugin dependencies as needed -->
   </dependencies>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <!-- ✅ Fully override inherited enforcer executions from Jenkins parent POM -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.0.0</version>
-          <executions>
-            <!-- Catch all inherited executions and disable them -->
-            <execution>
-              <id>default</id>
-              <phase>none</phase>
-            </execution>
-            <execution>
-              <id>enforce-bytecode-version</id>
-              <phase>none</phase>
-            </execution>
-            <execution>
-              <id>require-upper-bound-deps</id>
-              <phase>none</phase>
-            </execution>
-            <execution>
-              <id>ban-dependencies</id>
-              <phase>none</phase>
-            </execution>
-            <execution>
-              <id>display-info</id>
-              <phase>none</phase>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <plugins>
+      <!-- HPI plugin updated -->
       <plugin>
         <groupId>org.jenkins-ci.tools</groupId>
         <artifactId>maven-hpi-plugin</artifactId>
-        <version>3.66</version>       
+        <version>3.66</version>
         <configuration>
           <pluginFirstClassLoader>true</pluginFirstClassLoader>
         </configuration>
       </plugin>
 
+      <!-- Compiler plugin for Java 8 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -113,6 +81,31 @@
             </path>
           </annotationProcessorPaths>
         </configuration>
+      </plugin>
+
+      <!-- Enforcer plugin disabled -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>enforce</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>display-info</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>ban-bytecode</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>require-upper-bound-deps</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
