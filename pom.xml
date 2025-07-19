@@ -1,114 +1,97 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
+  <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
-    <artifactId>artifact-manager-s3</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>hpi</packaging>
+    <artifactId>plugin</artifactId>
+    <version>4.72</version>
+    <relativePath/>
+  </parent>
 
-    <name>Artifact Manager S3 Plugin</name>
-    <description>Jenkins plugin to store build artifacts in Amazon S3.</description>
-    <url>https://www.jenkins.io</url>
+  <groupId>io.jenkins.plugins</groupId>
+  <artifactId>artifact-manager-s3</artifactId>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <packaging>hpi</packaging>
 
-    <properties>
-        <jenkins.version>2.426.2</jenkins.version>
-        <java.level>8</java.level> <!-- Required for Jenkins plugin compatibility -->
-        <workflow-api-plugin.version>2.91</workflow-api-plugin.version>
-    </properties>
+  <name>Artifact Manager S3 Plugin</name>
+  <url>https://www.jenkins.io</url>
 
-    <parent>
-        <groupId>org.jenkins-ci.plugins</groupId>
-        <artifactId>plugin</artifactId>
-        <version>4.72</version>
-        <relativePath/>
-    </parent>
+  <properties>
+    <jenkins.version>2.426.2</jenkins.version>
+    <java.level>8</java.level> <!-- Compile bytecode for Java 8 -->
+    <workflow-api-plugin.version>2.91</workflow-api-plugin.version>
+  </properties>
 
-    <repositories>
-        <repository>
-            <id>jenkins-public</id>
-            <url>https://repo.jenkins-ci.org/public/</url>
-        </repository>
-        <repository>
-            <id>jenkins-snapshots</id>
-            <url>https://repo.jenkins-ci.org/snapshots/</url>
-        </repository>
-    </repositories>
+  <repositories>
+    <repository>
+      <id>jenkins-public</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </repository>
+    <repository>
+      <id>jenkins-snapshots</id>
+      <url>https://repo.jenkins-ci.org/snapshots/</url>
+    </repository>
+  </repositories>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.jenkins-ci.plugins.workflow</groupId>
-                <artifactId>workflow-api</artifactId>
-                <version>${workflow-api-plugin.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
+  <dependencyManagement>
     <dependencies>
-        <!-- Jenkins plugin dependencies -->
-        <dependency>
-            <groupId>org.jenkins-ci.plugins.workflow</groupId>
-            <artifactId>workflow-api</artifactId>
-        </dependency>
-
-        <!-- Exclude problematic JDK11+ bytecode deps if needed -->
-        <!-- Example (uncomment if needed):
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>some-plugin</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jenkins-ci</groupId>
-                    <artifactId>bridge-method-annotation</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        -->
+      <dependency>
+        <groupId>org.jenkins-ci.plugins.workflow</groupId>
+        <artifactId>workflow-api</artifactId>
+        <version>${workflow-api-plugin.version}</version>
+      </dependency>
     </dependencies>
+  </dependencyManagement>
 
-    <build>
-        <plugins>
-            <!-- HPI Plugin for Jenkins -->
-            <plugin>
-                <groupId>org.jenkins-ci.tools</groupId>
-                <artifactId>maven-hpi-plugin</artifactId>
-                <configuration>
-                    <pluginFirstClassLoader>true</pluginFirstClassLoader>
-                </configuration>
-            </plugin>
+  <dependencies>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-api</artifactId>
+    </dependency>
+    <!-- Add other dependencies like jclouds-shaded, aws-java-sdk, etc. -->
+  </dependencies>
 
-            <!-- Compiler Plugin: target Java 8 bytecode (required for Jenkins) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.jenkins-ci</groupId>
-                            <artifactId>annotation-indexer</artifactId>
-                            <version>1.17</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jenkins-ci.tools</groupId>
+        <artifactId>maven-hpi-plugin</artifactId>
+        <configuration>
+          <pluginFirstClassLoader>true</pluginFirstClassLoader>
+        </configuration>
+      </plugin>
 
-            <!-- Disable enforcer rules temporarily -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>disable-enforcer</id>
-                        <phase>none</phase>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.jenkins-ci</groupId>
+              <artifactId>annotation-indexer</artifactId>
+              <version>1.17</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <!-- Temporarily disable Enforcer rules -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>disable-enforcer</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
