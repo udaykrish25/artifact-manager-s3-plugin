@@ -24,54 +24,39 @@
   </properties>
 
   <build>
+    <!-- ✅ Proper override of parent pluginManagement for enforcer -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.0.0</version>
+          <executions>
+            <execution>
+              <id>disable-enforcer</id>
+              <phase>none</phase>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
-      <!-- Optional: You can comment this plugin block too -->
-      <!--
+      <!-- Optional: Keep this as a safeguard -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0</version>
         <executions>
           <execution>
-            <id>noop</id>
+            <id>disable-enforcer</id>
             <phase>none</phase>
           </execution>
         </executions>
       </plugin>
-      -->
     </plugins>
   </build>
-
-  <!-- 👇 Profile to disable all enforcer rules -->
-  <profiles>
-    <profile>
-      <id>disable-enforcer</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>disable-all-enforcer-rules</id>
-                <phase>none</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <dependencies>
     <!-- Add your plugin dependencies here -->
   </dependencies>
-
 </project>
-
-
-
-
