@@ -80,27 +80,21 @@
         </configuration>
       </plugin>
 
+      <!-- Override inherited Enforcer rules from Jenkins parent -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0</version>
         <executions>
-          <!-- Disable Jenkins plugin parent enforcer rules -->
           <execution>
-            <id>enforce</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>display-info</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>ban-bytecode</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>require-upper-bound-deps</id>
-            <phase>none</phase>
+            <id>override-inherited</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules/>
+              <fail>false</fail>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -108,5 +102,6 @@
     </plugins>
   </build>
 </project>
+
 
 
