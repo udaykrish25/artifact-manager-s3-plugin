@@ -327,6 +327,12 @@
       <snapshots><enabled>false</enabled></snapshots>
     </repository>
     <repository>
+      <id>jenkins-incremental</id>
+      <url>https://repo.jenkins-ci.org/incrementals/</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+    <repository>
       <id>central</id>
       <url>https://repo.maven.apache.org/maven2</url>
       <releases><enabled>true</enabled></releases>
@@ -338,6 +344,12 @@
     <pluginRepository>
       <id>jenkins-public</id>
       <url>https://repo.jenkins-ci.org/public/</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>false</enabled></snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>jenkins-incremental</id>
+      <url>https://repo.jenkins-ci.org/incrementals/</url>
       <releases><enabled>true</enabled></releases>
       <snapshots><enabled>false</enabled></snapshots>
     </pluginRepository>
