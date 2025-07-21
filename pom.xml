@@ -24,7 +24,7 @@
   <properties>
     <jenkins.version>2.426.2</jenkins.version>
     <java.level>17</java.level>
-    <workflow-api-plugin.version>1371.ve334280b_d611</workflow-api-plugin.version>
+    <workflow-api-plugin.version>1292.v51d4180c1b_9</workflow-api-plugin.version>
     <useBeta>true</useBeta>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
